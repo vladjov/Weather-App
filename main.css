@@ -1,0 +1,1142 @@
+*{
+    box-sizing: border-box;
+}
+
+:root{
+    --main-blue: #2F8BF2;
+    --light-blue: #00E5FF;
+    --background-light: #F9F9F9;
+    --body-width: 380px;
+    font-family:'Roboto';
+}
+
+body {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.container {
+    margin: auto;
+    padding: 0;
+    width: var(--body-width);
+    height: calc(var(--body-width) * 1.8);
+    overflow: scroll;
+    background-color: var(--background-light);
+    position: relative;
+}
+
+.nightMode *{
+    background-color: #2b2d2d;
+    color: white;
+}
+
+.nightMode #cityInputField {
+    color: black;
+}
+
+.weatherContainerWrapper {
+    width: 100%;
+    padding: 0 0.5em;    
+    display: block;  
+}
+
+.weatherContainer {
+    overflow: hidden;
+}
+
+.weatherContainer .content {
+    padding: 0 1em;
+    min-width: 100%;
+    overflow: auto;
+    transition: transform 0.5s cubic-bezier(.18,1.14,.56,1.01);
+    position: relative;
+}
+
+ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+li {
+    padding: 5px;
+
+}
+
+header, footer {
+    display: flex;
+    justify-content: space-between;
+    position: sticky;
+    background-color: var(--background-light);
+    font-weight: 300;
+    border: 1px solid var(--background-light);
+    border-radius: 0.2em;
+    box-shadow: 0 0.2em 0.7em rgba(163, 177, 198, 0.4),
+                -0.2em -0.2em 0.7em rgba(255, 255, 255, 0.4);
+    transition: all 0.4s ease-in-out;
+    z-index: 5;
+}
+
+header {
+    top: 0;
+}
+
+footer {
+    bottom: 0;
+    padding: 0;
+    box-shadow: 0 -0.2em 0.7em rgba(163, 177, 198, 0.4),
+                -0.2em -0.2em 0.7em rgba(255, 255, 255, 0.4);
+}
+
+header nav {
+    padding: 0.5em 1em;
+    display: flex;
+    justify-content: space-between;
+}
+
+nav {
+    width: 100%;
+}
+
+.nightMode header, .nightMode footer{
+    background-color: #2b2d2d;
+    border: 1px solid #2b2d2d;
+    box-shadow: 0.1em 0.1em 0.7em rgba(10, 10, 10, 0.5), 
+		        -0.1em -0.1em 0.7em rgba(52, 52, 52, 0.5);
+}
+
+.nightMode footer {
+    box-shadow: -0.1em -0.1em 0.7em rgba(10, 10, 10, 0.5),
+                -0.1em -0.1em 0.7em rgba(52, 52, 52, 0.5);
+    
+}
+
+.citySearchContainer {
+    display: flex;
+    align-items:center;
+    justify-content: end;
+}
+
+.cityInputContainer{
+	background-color: #EEEEEE;
+    margin-right: 0.5em;
+    border: 0.1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 0.3em;
+    outline: none;
+    box-shadow: 
+                inset 0.1em 0.1em 0.25em rgb(163 177 198 / 60%), 
+                inset -0.1em -0.1em 0.25em rgb(255 255 255);
+    border: none;
+    transition: all 0.2s ease-in-out;
+    width: 8em;
+    display: flex;
+    align-items: center;
+}
+
+#cityInputField {
+    border: none;
+    background: none;
+    width: 100%;
+    padding: 0.8em 0.8em 0.8em 2.5em;
+}
+
+#cityInputField:focus {
+    border: 1px solid var(--main-blue);
+    border-radius: 0.3em;
+}
+
+.cityInputContainer svg{
+    background: none;
+    position: absolute;
+    margin-left: 0.5em;
+}
+
+.nightMode .cityInputContainer svg{
+    fill: black;
+}
+
+#cityMatchListContainer {
+    box-sizing: border-box;
+    padding: 0;
+    min-height: 0;
+    max-height: max-content;
+    position: sticky;
+    width: 100%;
+    position: relative;
+    display: inline-block;
+    overflow: auto;
+    z-index: 2;
+}
+
+#cityMatchList{
+    box-sizing: border-box;
+    max-height: 100%;
+    padding: 0.5em;
+    box-shadow: 0.2em 0.2em 0.7em rgba(163, 177, 198, 0.6),
+                -0.2em -0.2em 0.7em rgba(255, 255, 255, 1); 
+}
+
+.cityMatched {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 1em 3em 1em 3em;
+    display: block;
+    opacity: 0.6;
+    background: white;
+    border: 1px solid white;
+    border-radius: 0.2em;
+    box-shadow: 0 0.2em 0.7em rgba(163, 177, 198, 0.6),
+                -0.2em -0.2em 0.7em rgba(255, 255, 255, 1);
+    transition: all 0.3s ease-in-out;
+}
+
+.cityMatched:last-child {
+    margin-bottom: 1em;
+}
+
+.nightMode .cityMatched {
+    background: #2b2d2d;
+    border: 1px solid rgba(52, 52, 52, 0.5);
+    box-shadow: 0.2em 0.2em 0.7em rgba(10, 10, 10, 0.7), 
+		          -0.2em -0.2em 0.7em rgba(52, 52, 52, 0.5);
+
+}
+
+.nightMode #cityMatchListContainer, .nightMode #cityMatchList {
+    background: #2b2d2d;
+} 
+
+.cityMatched:hover {
+    box-sizing: border-box;
+    border: 1px solid var(--main-blue);
+    opacity: 1;
+}
+
+.cityMatched h4, .cityMatched p {
+    margin: 0.7em 0 0 0;
+}
+
+.citySearchContainer label:hover svg, #geolocationBtn:hover svg, #favoritesListBtn:hover svg, .homeCity span svg, #refreshManualyBtn:hover svg, #settingsBtn:hover svg, .deleteIcon:hover svg {
+    fill: var(--main-blue);
+    stroke: var(--main-blue);
+    transition: all 0.1s ease-in-out;
+}
+
+#favoritesListBtn:focus svg {
+    fill: var(--main-blue);
+    stroke: var(--main-blue);
+    transition: all 0.1s ease-in-out;
+}
+
+.footerList{
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+    position: relative;
+}
+
+.footerList svg{
+    width: 2.2em;
+    height: 2.2em;
+    fill: none;
+    stroke: #2b2d2d;
+    stroke-width: 1;
+    transition: all 0.3s ease-in-out;    
+}
+
+.nightMode .footerList svg{
+    stroke: white;
+}
+
+.footerList span {
+    font-size: 0.8em;
+    padding-top: 0.7em;
+}
+
+.footerItem {
+    box-sizing: border-box;
+    width: 4em;
+    padding: 0.5em 0;
+    display: grid;
+    place-items: center;
+    border: 0.2em solid var(--background-light);
+    cursor: pointer;   
+}
+
+.nightMode .footerItem {
+    border: 0.2em solid #2b2d2d;
+}
+
+.footerItem svg, .footerItem span{
+    pointer-events: none;
+    transform: scale(var(--scale, .8));
+    transition: transform .3s cubic-bezier(0.38,-0.12, 0.24, 1.91);
+} 
+
+.footerItem:hover svg,
+.footerItem:hover span,
+.footerItem.active svg,
+.footerItem.active span {
+    fill: var(--main-blue);
+    stroke: var(--main-blue);
+    color: var(--main-blue);
+    --scale: 1;
+}
+
+.weatherLocation {
+    margin: auto 0;
+    
+}
+
+.currentCityAndCountry {
+    display: flex;
+    align-items: center;
+    transition: all 0.3s ease-in-out;
+}
+
+.currentCityAndCountry p {
+    font-weight: 600;
+    margin: 0;
+}
+
+.currentCityAndCountry .currentIcon {
+    width: 2em;
+    margin-left: .7em; 
+}
+.currentCityAndCountry .currentTemperature {
+    margin: 0;
+    font-size: initial; 
+}
+
+.currentTemperatureAndIcon {
+    display: flex;
+    scale: 0; 
+    align-items: center;
+    margin: 1em;
+    transition: 0.4s cubic-bezier(.69,-0.29,.39,1.35);
+}
+
+.currentIcon {
+    grid-area: image;
+}
+
+.currentDate {
+    grid-area: date;
+}
+
+.currentTime {
+    grid-area: time;
+}
+
+.currentTemperature {
+    grid-area: temperature;
+    font-size: 6em;
+    font-weight: 600;
+}
+
+.currentFeel {
+    grid-area: feel;
+}
+
+.currentDescription {
+    grid-area: description;
+}
+
+.currentHumidity {
+    grid-area: humidity;
+}
+
+.currentPressure {
+    grid-area: pressure;
+}
+
+.currentUVIndex {
+    grid-area: uvindex;
+}
+
+.currentWind {
+    grid-area: wind;
+}
+
+.currentSunrise {
+    grid-area: sunrise;
+}
+
+.currentSunset {
+    grid-area: sunset;
+}
+
+.currentRainVolume {
+    grid-area: raining;
+}
+
+.currentSnowVolume {
+    grid-area: snowing;
+}
+
+.currentSunrise, 
+.currentSunset, 
+.currentHumidity, 
+.currentWind, 
+.currentRainVolume, 
+.currentSnowVolume, 
+.currentPressure, 
+.currentUVIndex {
+    display: flex;
+    font-size: small;
+    align-items: center;
+}
+
+.currentList {
+    display: grid;
+    grid-template-columns: 32% 32% 32%;
+    grid-template-rows: auto;
+    
+    grid-template-areas: 
+        "city city date"
+        "time . date"
+        "temperature temperature image"
+        "description description feel"
+        "sunrise sunset wind"
+        "humidity uvindex pressure"
+        "snowing . ."
+        "raining . ."
+        ;
+    column-gap: 2%;
+    row-gap: 10px;
+}
+
+.currentIcon img{
+    width: 100%;
+    height: auto;
+}
+
+.currentList svg{
+    stroke: var(--main-blue);
+    margin-right: 5px;
+}
+
+/* Hourly element */
+
+.hourlyList {
+    display: flex;
+    overflow: auto;
+    box-sizing: border-box;
+    padding: 1em 0;
+}
+
+.hourlyList > li {
+    display: flex;
+    box-sizing: border-box;
+    height: min-content;
+}
+
+.hourlyIcon img{
+    width: 2em;
+}
+
+.hourlyList .essentials{
+    cursor: pointer;
+    width: 4em;
+    height: inherit;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    box-sizing: border-box;
+    padding: 1em;
+    text-align: center;
+    transition: all 0.3s ease-in-out;
+    flex: 1;
+}
+
+.hourlyTemperature, .hourlyTime  {
+    font-weight: 600;
+    color: black;
+
+}
+
+.slide-in-left {
+	-webkit-animation: slide-in-left 0.4s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+	        animation: slide-in-left 0.4s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+}
+
+@-webkit-keyframes slide-in-left {
+    0% {
+        -webkit-transform: translateX(-500px);
+                transform: translateX(-500px);
+        opacity: 0;
+    }
+
+    75% {
+        opacity: 0;
+    }
+
+    100% {
+        -webkit-transform: translateX(0);
+                transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes slide-in-left {
+    0% {
+        -webkit-transform: translateX(-500px);
+                transform: translateX(-500px);
+        opacity: 0;
+    }
+
+    75% {
+        opacity: 0;
+    }
+
+    100% {
+        -webkit-transform: translateX(0);
+                transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+.hourlyDetails {
+    display: none;
+    width: 0;
+    height: inherit;
+    overflow: hidden;
+    opacity: 0;
+    animation-name: slide-in-left;
+    animation-duration: 0.3s;
+    margin: auto;
+    font-weight: 300;
+    color:black;
+}
+
+.hourlyDetails svg{
+    width: 1.2em;
+    height: 1.2em;
+    stroke: var(--main-blue);
+    margin-right: 0.5em;
+}
+
+.hourlyList ul ~ ul {
+    box-sizing: border-box;
+    padding: 1em 1em 0.5em 0;
+    height: auto;
+    width: max-content;
+    text-align: left;
+    margin-left: 0;
+}
+
+.hourlyDetails li {
+    padding-top: 0;
+    padding-bottom: 0.5em;
+    display: flex;
+    align-items: center;
+}
+
+.currentDescription::first-letter, 
+.dailyDescription::first-letter,
+.hourlyDescription::first-letter  {
+    text-transform: uppercase;
+}
+
+/* Daily styles */
+
+.dailyIcon {
+    display: flex;
+    justify-content: right;
+}
+
+.dailyIcon img{
+    width: 2em;
+}
+
+.dailyIcon p{
+    font-size: 0.7em;
+    color: var(--light-blue);
+}
+
+.dailyTemperatureAndFeel {
+    display: flex;
+    justify-content: space-around;
+}
+
+.dailyList > li, .hourlyList > li, #favorites li, .toggleWrapper label, .frequencyWrapper label{
+    background-color: white;
+    margin: 0.5em auto;
+    padding: 0;
+    font-weight: 300;
+    color: gray;
+    border: 1px solid white;
+    border-radius: 0.5em;
+    box-shadow: 0.2em 0.2em 0.7em rgba(163, 177, 198, 0.6),
+                -0.2em -0.2em 0.7em rgba(255, 255, 255, 1);  
+}
+
+.hourlyList > li{
+    margin: 0.5em;
+}
+
+.dailyList .essentials, .hourlyList .essentials, #favorites li, .toggleWrapper label span, .frequencyWrapper label span {
+    padding: 0.5em;
+    opacity: 0.7;
+}
+
+.dailyList .essentials:hover, .hourlyList .essentials:hover, #favorites li:hover, .toggleWrapper label:hover > span, .frequencyWrapper label:hover > span{
+    opacity: 1;
+}
+
+.dailyList > li .dailyDetails {
+    padding: 0 0.5em;
+}
+
+.dailyList li:active, .toggleWrapper label:active, .frequencyWrapper label:active, .hourlyList li:active {
+    scale: 0.99;
+}
+
+.dailyDetails{
+    pointer-events: none;
+}
+
+.dailyList > li:hover, .hourlyList > li:hover, #favorites li:hover, .toggleWrapper label:hover, .frequencyWrapper label:hover {
+    border: 1px solid var(--main-blue);
+}
+
+.dailyList .essentials:active, .hourlyList .essentials:active, #favorites li:active, .footerList li:active, .toggleWrapper label:active, .frequencyWrapper label:active{
+    background: rgb(218,217,223);
+    background: radial-gradient(circle, rgba(218,217,223,1) 0%, rgba(246,242,242,0.21330530503216916) 85%, rgba(255,255,255,1) 100%);
+    transition: all 1s ease-in-out;
+}
+
+.nightMode .dailyList *, .nightMode .hourlyList *, .nightMode #favorites li, .nightMode .toggleWrapper *, .nightMode .frequencyWrapper * {
+    background: none;
+}
+
+.nightMode .dailyList > li .essentials:active, .nightMode .hourlyList > li .essentials:active, .nightMode .toggleWrapper label:active, .nightMode .frequencyWrapper label:active{
+    background: rgb(93,93,96);
+    background: linear-gradient(90deg, rgba(54,52,52,0.21330530503216916) 0%, rgba(93,93,96,1 ) 100%, rgba(62,61,61,1) 100%);
+    transition: all 0.3s ease-in-out;
+}
+
+.nightMode .dailyList > li, .nightMode .hourlyList > li, .nightMode #favorites li, .nightMode .toggleWrapper label, .nightMode .frequencyWrapper label{
+    background-color: #2b2d2d;
+    border: 1px solid #2b2d2d;
+    box-shadow: 0.2em 0.2em 0.7em rgba(10, 10, 10, 0.7), 
+		          -0.2em -0.2em 0.7em rgba(52, 52, 52, 0.5);
+}
+
+.nightMode .dailyList > li:hover, .nightMode .hourlyList > li:hover, .nightMode #favorites li:hover, .toggleWrapper label:hover, .frequencyWrapper label:hover {
+    border: 1px solid var(--main-blue);
+}
+
+.dailyList > li span, #favorites li {
+    font-weight: 500;
+    color: black;
+}
+
+.nightMode .dailyList > li span, .nightMode .hourlyList li  {
+    color: white;
+}
+
+.dailyTemperatureAndFeel li h6{
+    margin: 5px 0;
+}
+
+.dailyTemperatureAndFeel li p{
+    display: inline;
+}
+
+.essentials {
+    cursor: pointer;
+    align-items: center;
+    border-radius: 0.5em;
+}
+
+.dailyDayOfTheWeek {
+    grid-area: day;
+}
+
+.dailyDescription {
+    grid-area: description;
+}
+
+.dailyTemperatureMaxMin {
+    grid-area: maxmin;
+    display: flex;
+    justify-content: right;
+}
+
+.dailyIcon {
+    grid-area: dailyicon;
+}
+
+.dailyList .essentials {
+    display: grid;
+    grid-template-columns: 60% 2fr 1fr; 
+    grid-template-rows: auto;
+
+    grid-template-areas: 
+        "day maxmin dailyicon"
+        "description maxmin dailyicon"
+    ;
+}
+
+.dailyDetails { 
+    height: 0;
+    overflow: hidden;
+    opacity: 0;
+    transition: all .3s ease;
+}
+
+.dailyDetails svg{
+    stroke: var(--main-blue);
+    margin-right: 0.2em;
+}
+
+.dailyDetails li {
+    display: grid;
+    grid-template-columns: 10% 1fr 2fr; 
+    align-items: center;
+}
+
+.dailyDetails li span {
+    text-align: right;
+}
+
+.dailyDetails .dailyTemperature {
+    display: block;
+}
+
+.dailyTemperatureAndFeel li {
+    display: block;
+}
+
+.show {
+    display: block;
+    opacity: 1;
+    height: max-content;
+    padding-top: 1em;
+}
+
+.tempFeel {
+    opacity: 0.5;
+}
+
+.favoritesDiv, .dailyWeather {
+    padding-top: 6em;
+}
+
+#favorites li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-sizing: border-box;
+    padding: 0 1em;
+}
+
+#favorites li:hover {
+    border: 1px solid var(--main-blue);
+    cursor: pointer;
+}
+
+.favoriteCity div {
+    width: 1.5em;
+    height: 1.5em;
+    display: flex;
+    justify-content: center;
+}
+
+.favoriteCity svg {
+    width: 1.2em;
+    transition: all .3s ease;
+    pointer-events: none;
+}
+
+.favoriteCity p, .homeCity p, .homeCity svg, .homeCityName, .homeCityName > *  {
+    pointer-events: none;
+}
+
+#favorites li:first-of-type {
+    margin-bottom: 2em;
+}
+
+.homeCity span {
+    display: flex;
+    align-items: center;
+    font-weight: 300;
+    margin-bottom: 0.7em;
+}
+
+.homeCity span p, .homeCity span svg {
+    pointer-events: none;
+}
+
+.homeCity span p {
+    margin: 0;
+}
+
+.homeCity span svg {
+    margin-right: 0.5em;
+    stroke-width: 1;
+}
+
+button {
+    border: none;
+    background: none;
+    color: #232c3d;
+}
+
+.buttonTooltip {
+    --width: 70px;
+    --height: 70px;
+    --border-radius: var(--height);
+    width: var(--width);
+    height: var(--height);
+    position: absolute;
+    bottom: 6em;
+    left: 72%;
+    border-radius: var(--border-radius);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0.2em 0.2em 0.7em rgba(163, 177, 198, 0.6),
+                -0.2em -0.2em 0.7em rgba(255, 255, 255, 1);
+}
+
+.nightMode .buttonTooltip {
+    box-shadow: 0.2em 0.2em 0.7em rgba(10, 10, 10, 0.7), 
+		          -0.2em -0.2em 0.7em rgba(52, 52, 52, 0.5);
+}
+
+.buttonTooltip .btn {
+    background: var(--main-blue);
+    width: var(--width);
+    height: var(--height);
+    position: relative;
+    z-index: 3;
+    border-radius: var(--border-radius);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    animation: plus-animation-reverse 0.5s ease-out forwards;
+}
+
+.buttonTooltip .btn::before, .buttonTooltip .btn::after {
+    content: "";
+    display: block;
+    position: absolute;
+    border-radius: 3px;
+    background: #fff;
+}
+
+.buttonTooltip .btn::before {
+    width: 4px;
+    height: 28px;
+}
+
+.buttonTooltip .btn::after {
+    width: 28px;
+    height: 4px;
+}
+
+.buttonTooltip .tooltip {
+    width: 90px;
+    height: 75px;
+    border-radius: 70px;
+    position: absolute;
+    background: #fff;
+    z-index: 2;
+    padding: 0 15px;
+    box-shadow: 0.2em 0.2em 0.7em rgba(163, 177, 198, 0.6),
+                -0.2em -0.2em 0.7em rgba(255, 255, 255, 1);
+    opacity: 0;
+    top: 0;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    transition: opacity 0.15s ease-in, top 0.15s ease-in, width 0.15s ease-in;
+}
+
+.nightMode .buttonTooltip .tooltip {
+    box-shadow: 0.2em 0.2em 0.7em rgba(10, 10, 10, 0.7), 
+		          -0.2em -0.2em 0.7em rgba(52, 52, 52, 0.5);
+}
+
+.buttonTooltip .tooltip > svg {
+    width: 100%;
+    height: 26px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    cursor: pointer;
+    background: none;
+    fill: none;
+    stroke: black;
+    stroke-width: 2px;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    opacity: 0.4;
+    transition: opacity 0.3s ease;
+}
+
+.buttonTooltip .tooltip > svg:hover {
+    opacity: 1;
+}
+
+.buttonTooltip .tooltip::after {
+    content: "";
+    width: 20px;
+    height: 20px;
+    background: #fff;
+    border-radius: 3px;
+    position: absolute;
+    left: 50%;
+    margin-left: -10px;
+    bottom: -8px;
+    transform: rotate(45deg);
+    z-index: 0;
+}
+
+.buttonTooltip input {
+    height: 100%;
+    width: 100%;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    position: absolute;
+    z-index: 5;
+    opacity: 0;
+}
+
+.buttonTooltip input:checked ~ .btn {
+    animation: plus-animation 0.5s ease-out forwards;
+}
+
+.buttonTooltip input:checked ~ .tooltip {
+    width: 110px;
+    height: 60px;
+    animation: stretch-animation 1s ease-out forwards 0.15s;
+    top: -75px;
+    opacity: 1;
+}
+
+@keyframes plus-animation {
+    0% {
+        transform: rotate(0) scale(1);
+   }
+    20% {
+        transform: rotate(60deg) scale(0.93);
+   }
+    55% {
+        transform: rotate(35deg) scale(0.97);
+   }
+    80% {
+        transform: rotate(48deg) scale(0.94);
+   }
+    100% {
+        transform: rotate(45deg) scale(0.95);
+   }
+}
+@keyframes plus-animation-reverse {
+    0% {
+        transform: rotate(45deg) scale(0.95);
+   }
+    20% {
+        transform: rotate(-15deg);
+   }
+    55% {
+        transform: rotate(10deg);
+   }
+    80% {
+        transform: rotate(-3deg);
+   }
+    100% {
+        transform: rotate(0) scale(1);
+   }
+}
+@keyframes stretch-animation {
+    0% {
+        transform: scale(1, 1);
+   }
+    10% {
+        transform: scale(1.1, 0.9);
+   }
+    30% {
+        transform: scale(0.9, 1.1);
+   }
+    50% {
+        transform: scale(1.05, 0.95);
+   }
+    100% {
+        transform: scale(1, 1);
+   }
+}
+
+/* FREQUENCY AND TOGGLE */
+
+.frequencyWrapper, .toggleWrapper {
+    display: grid;
+    grid-gap: 0.8em;
+}
+
+.toggleWrapper {
+    grid-template-columns: 1fr 1fr;
+}
+
+.frequencyWrapper label, .toggleWrapper label {
+    margin: 0 1em;
+    padding: 1em;
+    font-weight: 300;
+    border: 1px solid var(--background-light);
+    border-radius: 0.5em;
+    transition: all 0.2s ease-in-out;
+}
+
+.toggleWrapper label {
+    display: flex;
+    padding: 1.5em 1em;
+}
+
+.toggleWrapper label span {
+    padding: 0;
+    margin: 0;
+    margin-left: 1em;
+}
+
+.frequencyWrapper label:hover, .toggleWrapper label:hover {
+    font-weight: 500;
+}
+
+.frequencyWrapper label{
+    padding: 1.2em;
+}
+
+.btn-radio svg{
+    fill: none;
+    vertical-align: middle;
+}
+
+.btn-radio circle {
+    stroke-width: 2;
+    stroke: #C8CCD4;
+}
+
+.btn-radio path {
+      stroke: var(--main-blue);
+}
+
+.btn-radio path.inner {
+    stroke-width: 6;
+    stroke-dasharray: 19;
+    stroke-dashoffset: 19;
+}
+
+.btn-radio path.outer {
+    stroke-width: 2;
+    stroke-dasharray: 57;
+    stroke-dashoffset: 57;
+}
+
+.btn-radio input {
+    display: none;
+}
+
+.btn-radio input:checked + svg path {
+    transition: all .4s ease;
+}
+
+.btn-radio input:checked + svg path.inner {
+    stroke-dashoffset: 38;
+    transition-delay: .3s;
+}
+
+.btn-radio input:checked + svg path.outer {
+    stroke-dashoffset: 0;
+}
+.text{
+    opacity: 0.6;
+    margin-left: 1em;
+}
+
+.btn-radio:hover ~ .text {
+    opacity: 1;
+}
+
+.btn-radio input:checked ~ .text {
+    opacity: 1;
+    font-weight: 600;
+}
+
+footer .footerList .indicator {
+    width: 12%;
+    height: 0.15em;
+    position: absolute;
+    top: 0;
+    background: var(--main-blue);
+    transition: 0.3s cubic-bezier(.69,-0.29,.39,1.35);
+}
+
+.footerItem1.active ~ .indicator {
+    left: 4%; 
+}
+      
+.footerItem2.active ~ .indicator {
+    left: 24%; 
+}
+
+.footerItem3.active ~ .indicator {
+    left: 44%; 
+}
+    
+.footerItem4.active ~ .indicator {
+    left: 64%; 
+}
+
+.footerItem5.active ~ .indicator {
+    left: 84%; 
+}
+
+
+.notification {
+    width: 96%;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: -50px;
+    z-index: 5;
+    background-color: white;
+    margin: 0.5em;
+    padding: 0;
+    font-weight: 600;
+    border: 1px solid white;
+    border-radius: 0.5em;
+    box-shadow: 0.2em 0.2em 0.7em rgba(163, 177, 198, 0.6),
+                -0.2em -0.2em 0.7em rgba(255, 255, 255, 1);
+              
+}
+
+.nightMode .notification {
+    background-color: #2b2d2d;
+    border: 1px solid #2b2d2d;
+    box-shadow: 0.2em 0.2em 0.7em rgba(10, 10, 10, 0.7), 
+		          -0.2em -0.2em 0.7em rgba(52, 52, 52, 0.5);
+}
+
+.slideDown {
+    animation: slideDown 0.5s cubic-bezier(.69,-0.29,.39,1.35) forwards;
+}
+
+.slideUp {
+    animation: slideUp 0.5s cubic-bezier(.69,-0.29,.39,1.35) forwards;
+}
+
+@keyframes slideDown {
+    from { top: -50px; }
+    to   { top: 80px; }
+}
+  
+@keyframes slideUp {
+    from { top: 80px; }
+    to   { top: -50px; }
+}
