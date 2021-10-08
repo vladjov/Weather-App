@@ -65,11 +65,11 @@ addToFavoritesBtn.addEventListener("click", addFavouriteToStorage);
 addHomeCityBtn.addEventListener("click", addHomeCityToStorage);
 
 let deleteHomeCity = () => {
+    renderMessage(`${JSON.parse(localStorage.homeCity).city} is no longer a home city.`);
     localStorage.removeItem("homeCity");
     clearFavoritesElement();
     renderHomeCityEmpty();
     renderFavoriteCities();
-    renderMessage(`${cityAndCountry} is no longer a home city.`);
     showNotification();
 };
 
