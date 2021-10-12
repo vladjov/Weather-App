@@ -12,7 +12,7 @@ let slideUpNotification = () =>  {
 
 let showNotification = () => {
     slideDownNotification();
-    setTimeout(slideUpNotification, 3000);
+    setTimeout(slideUpNotification, 2000);
 };
 
 export { showNotification };

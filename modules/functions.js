@@ -7,6 +7,7 @@ export { resetLayout } from '../modules/functions/resetLayout.js';
 export { renderWindDirection } from './functions/renderWindDirection.js';
 export { getTime } from '../modules/functions/getTime.js';
 export { addToLocalStorage } from '../modules/functions/addToLocalStorage.js';
+export { removeFromLocalStorage } from '../modules/functions/removeFromLocalStorage.js';
 export { renderMessage } from '../modules/functions/renderMessage.js';
 export { getFavoritesFromStorage } from '../modules/functions/getFavoritesFromStorage.js';
 export { getHomeCityFromStorage } from '../modules/functions/getHomeCityFromStorage.js';

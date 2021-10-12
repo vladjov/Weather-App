@@ -1,8 +1,9 @@
-import { APIURLBASE, APIKEY, dateOptions, timeOptions, selectOnlyOneMsg, geolocationNotSuportedMsg, minCaractersToSearch, milisecondsInHour, lastInTheList, firstInTheList, activeElementClass } from './modules/variables.js';
-import { geolocationBtn, cityInputField, addToFavoritesBtn, refreshManualyBtn, addHomeCityBtn, body, temperatureToggle, updateFrequency, cityMatchList, weatherContainer, currentList, dailyList, hourlyList, favorites, currentCityAndCountry, container, footerItem, contents, addButtonCheckbox, notification }  from './modules/elements.js';
-import { checkUvi, floorValue, toggleDayOrNightMode, showDetails, resetInputAndCitiesMatched, resetLayout, renderWindDirection, getTime, addToLocalStorage, renderMessage, getFavoritesFromStorage, getHomeCityFromStorage, showCurrentTemperatureAndIcon, clearFavoritesElement, renderFavoriteCity, renderHomeCityEmpty, renderFavoriteCityEmpty, uncheckAddButtonCheckbox, animateTab, findElementWithClass, renderFavoriteCities, renderHomeCity, showNotification } from './modules/functions.js';
+import { APIURLBASE, APIKEY, dateOptions, timeOptions, enterValidCityNameMsg, selectOnlyOneMsg, geolocationNotSuportedMsg, locatingMsg, noLocationMsg, refreshManuallyMsg, noRefreshFrequencyMsg, minCaractersToSearch, milisecondsInHour, activeElementClass } from './modules/variables.js';
+import { geolocationBtn, cityInputField, addToFavoritesBtn, refreshManualyBtn, addHomeCityBtn, body, temperatureToggle, updateFrequency, cityMatchList, weatherContainer, currentList, dailyList, hourlyList, favorites, currentCityAndCountry, container, footerItem, contents }  from './modules/elements.js';
+import { checkUvi, floorValue, toggleDayOrNightMode, showDetails, resetInputAndCitiesMatched, resetLayout, renderWindDirection, getTime, addToLocalStorage, removeFromLocalStorage, renderMessage, getFavoritesFromStorage, getHomeCityFromStorage, showCurrentTemperatureAndIcon, clearFavoritesElement, renderHomeCityEmpty, uncheckAddButtonCheckbox, animateTab, findElementWithClass, renderFavoriteCities, renderHomeCity, showNotification } from './modules/functions.js';
 import { templateCurrent, templateDaily, templateHourly, templateMatchingCity, templateCurrentCityName } from './modules/templates.js';
 import { City } from '../modules/functions/createCity.js';
+import { alertSVG } from './modules/icons.js';
 
 let lat;
 let lon;
@@ -18,7 +19,7 @@ let refreshFrequencyFromStorage;
 let addFavouriteToStorage = () => {
     if(favoritesList.some(favorite => favorite.city === cityAndCountry)) {
         uncheckAddButtonCheckbox();
-        renderMessage(`${cityAndCountry} is already on the list.`);
+        renderMessage(`${cityAndCountry} is already in favorites.`);
         showNotification();
         return;
     }
@@ -29,7 +30,7 @@ let addFavouriteToStorage = () => {
     renderFavoriteCities();
     renderHomeCity();
     uncheckAddButtonCheckbox();
-    renderMessage(`${cityAndCountry} is added to the list.`);
+    renderMessage(`${cityAndCountry} is added to favorites.`);
     showNotification();
 };
 
@@ -66,7 +67,7 @@ addHomeCityBtn.addEventListener("click", addHomeCityToStorage);
 
 let deleteHomeCity = () => {
     renderMessage(`${JSON.parse(localStorage.homeCity).city} is no longer a home city.`);
-    localStorage.removeItem("homeCity");
+    removeFromLocalStorage("homeCity");
     clearFavoritesElement();
     renderHomeCityEmpty();
     renderFavoriteCities();
@@ -83,7 +84,7 @@ let deleteSelectedFavorite = (selected) => {
     clearFavoritesElement();
     renderFavoriteCities();
     renderHomeCity();
-    renderMessage(`${selected.parentNode.firstElementChild.innerHTML} has been removed from the favorites list.`);
+    renderMessage(`${selected.parentNode.firstElementChild.innerHTML} is removed from favorites.`);
     showNotification();
 };
 
@@ -115,9 +116,15 @@ let showOrDeleteSelectedFavorite = (e) => e.target.className === "deleteIcon" ?
                                         showSelectedFavorite(e.target);
 favorites.addEventListener("click", showOrDeleteSelectedFavorite);
 
+let uppercaseFirstLetter = (string) => {
+    return string = string.charAt(0).toUpperCase() + string.slice(1);
+} 
+
 async function unitToggle(unit) {
     if(unit === defaultUnit) return;
     defaultUnit = unit;
+    renderMessage(`${uppercaseFirstLetter(`${defaultUnit}`)} units selected.`);
+    showNotification();
     await extractAPIData(generateURLbyGeolocation(lat, lon));
     renderWeatherElements();
 };
@@ -158,17 +165,17 @@ cityInputField.addEventListener("input", () => searchCities(cityInputField.value
 cityInputField.addEventListener("keyup", (e) => {
 	if(e.key === "Enter") {
         if(!cityInputField.value || cityInputField.value[0] === " ") {
-            renderMessage("Please enter a valid city name.");
+            renderMessage(`${alertSVG} ${enterValidCityNameMsg}`);
             showNotification();
             return;
         };
         if(!matches || matches.length === 0){
-            renderMessage("Please enter a valid city name.");
+            renderMessage(`${alertSVG} ${enterValidCityNameMsg}`);
             showNotification();
             return;
         };
         if(matches.length !== 1) {
-            renderMessage(selectOnlyOneMsg);
+            renderMessage(`${alertSVG} ${selectOnlyOneMsg}`);
             showNotification();
             return;
         };
@@ -228,7 +235,7 @@ function geolocateMe() {
     };
     
     let error = () => {
-        renderMessage("Unable to retrieve your location");
+        renderMessage(noLocationMsg);
         showNotification();
     };
   
@@ -237,7 +244,7 @@ function geolocateMe() {
         showNotification();
         return;
     };
-    renderMessage("Locating...");
+    renderMessage(locatingMsg);
     showNotification();
     navigator.geolocation.getCurrentPosition(success, error);
 };
@@ -255,9 +262,10 @@ async function selectAndUpdateCityByLocalStorage() {
 };
 
 window.onload = () => {
+    renderMessage("Loading data...");
+    showNotification();
 	loadWeatherAndForecastFromLocalStorage();
     loadFavoritesFromLocalStorage();
-    loadRefreshFrequencyFromStorage();
 };
 
 let formatAPIObjectElements = (e) => {
@@ -340,22 +348,24 @@ hourlyList.addEventListener("click", showDetails);
 
 let loadRefreshFrequencyFromStorage = () => {
     if(!(localStorage.frequency)) {
-        renderMessage("No refresh frequency data.");
+        renderMessage(noRefreshFrequencyMsg);
         showNotification();
 		return;
     };
 
     clearInterval(refreshFrequencyFromStorage);
     if(localStorage.frequency === "manually") {
-        renderMessage("Manual refresh frequency.");
+        renderMessage(refreshManuallyMsg);
         showNotification();
         return;
     };
     refreshFrequencyFromStorage = setInterval((() => selectAndUpdateCityByEnter()), localStorage.frequency * milisecondsInHour);
+    renderMessage(`Refresh every ${localStorage.frequency == 1 ? (`${localStorage.frequency} hour.`) : (`${localStorage.frequency} hours.`)}`);
+    showNotification();
 };
 
 updateFrequency.addEventListener("click", function(event) {
-	localStorage.removeItem("frequency");
+	removeFromLocalStorage("frequency");
 	let frequency = event.target.value;
 	if(!frequency) return;
     addToLocalStorage("frequency", frequency);

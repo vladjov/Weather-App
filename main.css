@@ -18,6 +18,7 @@ body {
     align-items: center;
     justify-content: center;
 }
+
 .container {
     margin: auto;
     padding: 0;
@@ -77,11 +78,12 @@ header, footer {
     box-shadow: 0 0.2em 0.7em rgba(163, 177, 198, 0.4),
                 -0.2em -0.2em 0.7em rgba(255, 255, 255, 0.4);
     transition: all 0.4s ease-in-out;
-    z-index: 5;
+    z-index: 6;
 }
 
 header {
     top: 0;
+    display: relative;
 }
 
 footer {
@@ -94,7 +96,10 @@ footer {
 header nav {
     padding: 0.5em 1em;
     display: flex;
+    min-height: 60px;
     justify-content: space-between;
+    background-color: var(--background-light);
+    z-index: 6;
 }
 
 nav {
@@ -1098,8 +1103,8 @@ footer .footerList .indicator {
 
 
 .notification {
-    width: 96%;
-    height: 50px;
+    width: 94%;
+    height: 60px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -1122,6 +1127,7 @@ footer .footerList .indicator {
     border: 1px solid #2b2d2d;
     box-shadow: 0.2em 0.2em 0.7em rgba(10, 10, 10, 0.7), 
 		          -0.2em -0.2em 0.7em rgba(52, 52, 52, 0.5);
+
 }
 
 .slideDown {
@@ -1133,11 +1139,50 @@ footer .footerList .indicator {
 }
 
 @keyframes slideDown {
-    from { top: -50px; }
+    from { top: 0px; }
     to   { top: 80px; }
 }
   
 @keyframes slideUp {
     from { top: 80px; }
-    to   { top: -50px; }
+    to   { top: 0px; }
 }
+
+.notification p {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 15px;
+}
+.notification svg {
+    margin-right: 15px;
+    stroke: red;
+    animation: shake-lr 0.7s 0.5s cubic-bezier(0.455, 0.030, 0.515, 0.955) both;
+}
+ 
+@keyframes shake-lr {
+    0%,
+    100% {
+        transform: rotate(0deg);
+        transform-origin: 50% 50%;
+    }
+    10% {
+        transform: rotate(8deg);
+    }
+    20%,
+    40%,
+    60% {
+        transform: rotate(-10deg);
+    }
+    30%,
+    50%,
+    70% {
+        transform: rotate(10deg);
+    }
+    80% {
+        transform: rotate(-8deg);
+    }
+    90% {
+        transform: rotate(8deg);
+    }
+} 
