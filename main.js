@@ -1,7 +1,7 @@
 import { APIURLBASE, APIKEY, dateOptions, timeOptions, enterValidCityNameMsg, selectOnlyOneMsg, geolocationNotSuportedMsg, locatingMsg, noLocationMsg, refreshManuallyMsg, noRefreshFrequencyMsg, minCaractersToSearch, milisecondsInHour, activeElementClass } from './modules/variables.js';
-import { geolocationBtn, cityInputField, addToFavoritesBtn, refreshManualyBtn, addHomeCityBtn, body, temperatureToggle, updateFrequency, cityMatchList, weatherContainer, currentList, dailyList, hourlyList, favorites, currentCityAndCountry, container, footerItem, contents }  from './modules/elements.js';
-import { checkUvi, floorValue, toggleDayOrNightMode, showDetails, resetInputAndCitiesMatched, resetLayout, renderWindDirection, getTime, addToLocalStorage, removeFromLocalStorage, renderMessage, getFavoritesFromStorage, getHomeCityFromStorage, showCurrentTemperatureAndIcon, clearFavoritesElement, renderHomeCityEmpty, uncheckAddButtonCheckbox, animateTab, findElementWithClass, renderFavoriteCities, renderHomeCity, showNotification } from './modules/functions.js';
-import { templateCurrent, templateDaily, templateHourly, templateMatchingCity, templateCurrentCityName } from './modules/templates.js';
+import { geolocationBtn, cityInputField, addToFavoritesBtn, refreshManualyBtn, addHomeCityBtn, body, temperatureToggle, updateFrequency, cityMatchList, weatherContainer, currentList, dailyList, hourlyList, favorites, currentCityAndCountry, container, footer, footerItem, contents }  from './modules/elements.js';
+import { checkUvi, floorValue, toggleDayOrNightMode, showDetails, resetInputAndCitiesMatched, resetLayout, renderWindDirection, getTime, addToLocalStorage, removeFromLocalStorage, renderMessage, getFavoritesFromStorage, getHomeCityFromStorage, showCurrentTemperatureAndIcon, clearFavoritesElement, renderHomeCityEmpty, uncheckAddButtonCheckbox, animateTab, findElementWithClass, renderFavoriteCities, renderHomeCity, showNotification, displayIntro } from './modules/functions.js';
+import { templateCurrent, templateDaily, templateHourly, templateMatchingCity, templateCurrentCityName, templateUpdateFrequency, templateTemperatureToggle } from './modules/templates.js';
 import { City } from '../modules/functions/createCity.js';
 import { alertSVG } from './modules/icons.js';
 
@@ -262,8 +262,10 @@ async function selectAndUpdateCityByLocalStorage() {
 };
 
 window.onload = () => {
-    renderMessage("Loading data...");
-    showNotification();
+    displayIntro();
+    // templateFooter(footer);
+    templateTemperatureToggle(temperatureToggle);
+    templateUpdateFrequency(updateFrequency);
 	loadWeatherAndForecastFromLocalStorage();
     loadFavoritesFromLocalStorage();
 };

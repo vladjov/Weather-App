@@ -1,6 +1,4 @@
-import { getFavoritesFromStorage } from '/modules/functions.js';
-import { renderFavoriteCityEmpty } from '/modules/functions.js';
-import { renderFavoriteCity } from '/modules/functions.js';
+import { getFavoritesFromStorage, renderFavoriteCityEmpty, renderFavoriteCity } from '/modules/functions.js';
 
 async function renderFavoriteCities() {
     let res = await getFavoritesFromStorage();

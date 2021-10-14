@@ -15,15 +15,19 @@ const dailyList = document.querySelector(".dailyList");
 const hourlyList = document.querySelector(".hourlyList");
 
 const container = document.querySelector(".container");
+const footer = document.getElementsByTagName("footer");
 const footerItem = document.querySelectorAll(".footerItem");
 const contents = document.querySelectorAll(".content");
 
 const addButtonCheckbox = document.getElementById("addButtonCheckbox");
 
-
 const favorites =  document.getElementById("favorites");
 const notification = document.querySelector(".notification");
 
+const intro = document.querySelector(".intro");
+const introLogoSpan = document.querySelectorAll(".introLogoSpan");
+
 export { geolocationBtn, cityInputField, body, temperatureToggle, updateFrequency, cityMatchList,
         weatherContainer, currentList, currentCityAndCountry, dailyList, hourlyList, addToFavoritesBtn,  
-        refreshManualyBtn, addHomeCityBtn, favorites, container, footerItem, contents, addButtonCheckbox, notification }
+        refreshManualyBtn, addHomeCityBtn, favorites, container, footer, footerItem, contents, addButtonCheckbox, 
+        notification, intro, introLogoSpan }

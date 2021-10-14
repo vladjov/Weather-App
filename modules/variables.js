@@ -21,4 +21,8 @@ const  firstInTheList = "afterbegin";
 
 const activeElementClass = "active";
 
-export { APIURLBASE, APIKEY, WINDDIRECTIONS, dateOptions, timeOptions, ONEHOUR, milisecondsInHour, enterValidCityNameMsg, selectOnlyOneMsg, geolocationNotSuportedMsg, locatingMsg, noLocationMsg, refreshManuallyMsg, noRefreshFrequencyMsg,  minCaractersToSearch, lastInTheList, firstInTheList, activeElementClass };
+export { APIURLBASE, APIKEY, WINDDIRECTIONS, 
+    dateOptions, timeOptions, ONEHOUR, milisecondsInHour, 
+    enterValidCityNameMsg, selectOnlyOneMsg, geolocationNotSuportedMsg, 
+    locatingMsg, noLocationMsg, refreshManuallyMsg, noRefreshFrequencyMsg,  
+    minCaractersToSearch, lastInTheList, firstInTheList, activeElementClass };

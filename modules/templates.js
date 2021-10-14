@@ -7,3 +7,5 @@ export { templateHomeCity } from '../modules/templates/templateHomeCity.js';
 export { templateHomeCityEmpty } from '../modules/templates/templateHomeCityEmpty.js';
 export { templateMatchingCity } from '../modules/templates/templateMatchingCity.js';
 export { templateCurrentCityName } from '../modules/templates/templateCurrentCityName.js';
+export { templateUpdateFrequency } from '../modules/templates/templateUpdateFrequency.js';
+export { templateTemperatureToggle } from '../modules/templates/templateTemperatureToggle.js';
