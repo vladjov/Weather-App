@@ -1,4 +1,4 @@
-import { intro, introLogoSpan } from '/modules/elements.js';
+import { intro, introLogoSpan} from '/modules/elements.js';
 
 let displayIntro = () => {
     setTimeout(() => {
@@ -19,8 +19,10 @@ let displayIntro = () => {
 
         setTimeout(() => {
             intro.style.top = "-100%";
+            intro.style.opacity = "0";
         }, 3300)
     } )
+    
 };
 
 export { displayIntro };

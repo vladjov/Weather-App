@@ -19,7 +19,7 @@ let templateCurrent = (object, element) => {
             ${object.wind_speed} ${object.wind_speed_unit}
             ${object.wind_deg}
             <br>
-            ${object.wind_gust ? (`/ gust: ${object.wind_gust} ${object.wind_speed_unit}`) : ``}</li>
+            ${object.wind_gust ? (`gust: ${object.wind_gust} ${object.wind_speed_unit}`) : ``}</li>
         ${object.rain ? (`<li class="currentRainVolume">${umbrellaSVG} ${Object.values(object.rain)}mm</li>`) : ``}
         ${object.snow ? (`<li class="currentSnowVolume">${snowSVG} ${Object.values(object.snow)}mm</li>`) : ``}
         <li class="currentSunrise">${sunriseSVG} ${object.sunrise}</li>

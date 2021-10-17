@@ -1,6 +1,6 @@
-import { APIURLBASE, APIKEY, dateOptions, timeOptions, enterValidCityNameMsg, selectOnlyOneMsg, geolocationNotSuportedMsg, locatingMsg, noLocationMsg, refreshManuallyMsg, noRefreshFrequencyMsg, minCaractersToSearch, milisecondsInHour, activeElementClass } from './modules/variables.js';
-import { geolocationBtn, cityInputField, addToFavoritesBtn, refreshManualyBtn, addHomeCityBtn, body, temperatureToggle, updateFrequency, cityMatchList, weatherContainer, currentList, dailyList, hourlyList, favorites, currentCityAndCountry, container, footer, footerItem, contents }  from './modules/elements.js';
-import { checkUvi, floorValue, toggleDayOrNightMode, showDetails, resetInputAndCitiesMatched, resetLayout, renderWindDirection, getTime, addToLocalStorage, removeFromLocalStorage, renderMessage, getFavoritesFromStorage, getHomeCityFromStorage, showCurrentTemperatureAndIcon, clearFavoritesElement, renderHomeCityEmpty, uncheckAddButtonCheckbox, animateTab, findElementWithClass, renderFavoriteCities, renderHomeCity, showNotification, displayIntro } from './modules/functions.js';
+import { APIURLBASE, APIKEY, dateOptions, timeOptions, enterValidCityNameMsg, selectOnlyOneMsg, geolocationNotSuportedMsg, locatingMsg, noLocationMsg, refreshManuallyMsg,  minCaractersToSearch, milisecondsInHour, activeElementClass } from './modules/variables.js';
+import { geolocationBtn, cityInputField, addToFavoritesBtn, refreshManualyBtn, addHomeCityBtn, body, temperatureToggle, updateFrequency, cityMatchList, weatherContainer, currentList, dailyList, hourlyList, favorites, currentCityAndCountry, container, footerItem, contents }  from './modules/elements.js';
+import { checkUvi, floorValue, toggleDayOrNightMode, showDetails, resetInputAndCitiesMatched, resetLayout, renderWindDirection, getTime, addToLocalStorage, removeFromLocalStorage, renderMessage, getFavoritesFromStorage, getHomeCityFromStorage, showCurrentTemperatureAndIcon, clearFavoritesElement, renderHomeCityEmpty, uncheckAddButtonCheckbox, animateTab, findElementWithClass, renderFavoriteCities, renderHomeCity, showNotification, displayIntro, displayWelcome } from './modules/functions.js';
 import { templateCurrent, templateDaily, templateHourly, templateMatchingCity, templateCurrentCityName, templateUpdateFrequency, templateTemperatureToggle } from './modules/templates.js';
 import { City } from '../modules/functions/createCity.js';
 import { alertSVG } from './modules/icons.js';
@@ -16,13 +16,22 @@ let favoritesList = [];
 let homeCity;
 let refreshFrequencyFromStorage;
 
+
 let addFavouriteToStorage = () => {
+    if(!cityAndCountry) {
+        uncheckAddButtonCheckbox();
+        renderMessage(`${alertSVG} Can't add undefined!!!`);
+        showNotification();
+        return;
+    };
+
     if(favoritesList.some(favorite => favorite.city === cityAndCountry)) {
         uncheckAddButtonCheckbox();
         renderMessage(`${cityAndCountry} is already in favorites.`);
         showNotification();
         return;
     }
+
     favoritesList.push(new City(cityAndCountry, lat, lon));
     addToLocalStorage("favorites", JSON.stringify(favoritesList));
     
@@ -35,12 +44,20 @@ let addFavouriteToStorage = () => {
 };
 
 let addHomeCityToStorage = () => {
+    if(!cityAndCountry) {
+        uncheckAddButtonCheckbox();
+        renderMessage(`${alertSVG} Can't add undefined!!!`);
+        showNotification();
+        return;
+    };
+
     if(getHomeCityFromStorage() !== undefined && getHomeCityFromStorage().city === cityAndCountry) {
         uncheckAddButtonCheckbox();
         renderMessage(`${cityAndCountry} is already a home city.`);
         showNotification();
         return;
     }
+
     homeCity = new City(cityAndCountry, lat, lon);
     addToLocalStorage("homeCity", JSON.stringify(homeCity));
     renderHomeCity();
@@ -54,7 +71,8 @@ let loadFavoritesFromLocalStorage = () => {
         renderFavoriteCities();
         renderHomeCity();
         return;
-    }
+    };
+
     getFavoritesFromStorage();
     let favoritesInStorage = JSON.parse(localStorage.favorites);
 	favoritesList = favoritesInStorage;
@@ -87,7 +105,6 @@ let deleteSelectedFavorite = (selected) => {
     renderMessage(`${selected.parentNode.firstElementChild.innerHTML} is removed from favorites.`);
     showNotification();
 };
-
 
 async function showSelectedFavorite(selected) {
     if(selected.classList[0] === "homeCity") {
@@ -204,6 +221,7 @@ async function selectAndUpdateCityByEnter() {
     await extractAPIData(generateURLbyGeolocation(lat, lon));
     renderWeatherElements();
     resetInputAndCitiesMatched();
+    hideWellcomeScreen();
 };
 
 async function selectAndUpdateCityByClick(event) {
@@ -250,7 +268,7 @@ function geolocateMe() {
 };
 geolocationBtn.addEventListener("click", geolocateMe);
 
-let loadWeatherAndForecastFromLocalStorage = () => (localStorage.homeCity) ? (selectAndUpdateCityByLocalStorage()) : console.log("No latitude and longitude in the local storage.");
+let loadWeatherAndForecastFromLocalStorage = () => (localStorage.homeCity) ? (selectAndUpdateCityByLocalStorage(), hideWellcomeScreen()) : showWellcomeScreen();
 
 async function selectAndUpdateCityByLocalStorage() {
     let homeCityLocalStorage = JSON.parse(localStorage.homeCity);
@@ -261,13 +279,25 @@ async function selectAndUpdateCityByLocalStorage() {
     resetInputAndCitiesMatched();
 };
 
+let showWellcomeScreen = () => {
+    document.querySelector("header").classList.add("showWellcomeScreenHeader");
+    document.querySelector(".logo").classList.add("showWellcomeScreenLogo");
+}
+
+let hideWellcomeScreen = () => {
+    document.querySelector("header").classList.remove("showWellcomeScreenHeader");
+    document.querySelector(".logo").classList.remove("showWellcomeScreenLogo");
+    document.querySelector(".welcome").style.display = "none";
+}
+
 window.onload = () => {
     displayIntro();
-    // templateFooter(footer);
     templateTemperatureToggle(temperatureToggle);
     templateUpdateFrequency(updateFrequency);
 	loadWeatherAndForecastFromLocalStorage();
+    displayWelcome();
     loadFavoritesFromLocalStorage();
+    loadRefreshFrequencyFromStorage();
 };
 
 let formatAPIObjectElements = (e) => {
@@ -348,21 +378,24 @@ let renderWeatherElements = () => {
 dailyList.addEventListener("click", showDetails);
 hourlyList.addEventListener("click", showDetails);
 
+let showElementAsChecked = (element) => {
+    document.getElementById(element).checked = "checked";
+};
+
 let loadRefreshFrequencyFromStorage = () => {
-    if(!(localStorage.frequency)) {
-        renderMessage(noRefreshFrequencyMsg);
-        showNotification();
-		return;
-    };
+    if(!localStorage.frequency) return;
 
     clearInterval(refreshFrequencyFromStorage);
+    showElementAsChecked(localStorage.frequency);
+
     if(localStorage.frequency === "manually") {
         renderMessage(refreshManuallyMsg);
         showNotification();
         return;
     };
+    
     refreshFrequencyFromStorage = setInterval((() => selectAndUpdateCityByEnter()), localStorage.frequency * milisecondsInHour);
-    renderMessage(`Refresh every ${localStorage.frequency == 1 ? (`${localStorage.frequency} hour.`) : (`${localStorage.frequency} hours.`)}`);
+    renderMessage(`Refresh every ${localStorage.frequency == 1 ? (`hour.`) : (`${localStorage.frequency} hours.`)}`);
     showNotification();
 };
 

@@ -1,5 +1,6 @@
 const geolocationBtn = document.getElementById("geolocationBtn");
 const cityInputField = document.getElementById("cityInputField");
+const citySearchContainer = document.querySelector(".citySearchContainer");
 const addToFavoritesBtn = document.getElementById("addToFavoritesBtn");
 const addHomeCityBtn = document.getElementById("addHomeCityBtn");
 const refreshManualyBtn = document.getElementById("refreshManualyBtn");
@@ -26,8 +27,9 @@ const notification = document.querySelector(".notification");
 
 const intro = document.querySelector(".intro");
 const introLogoSpan = document.querySelectorAll(".introLogoSpan");
+const welcomeSpan = document.querySelectorAll(".welcomeSpan");
 
-export { geolocationBtn, cityInputField, body, temperatureToggle, updateFrequency, cityMatchList,
+export { geolocationBtn, cityInputField, citySearchContainer, body, temperatureToggle, updateFrequency, cityMatchList,
         weatherContainer, currentList, currentCityAndCountry, dailyList, hourlyList, addToFavoritesBtn,  
         refreshManualyBtn, addHomeCityBtn, favorites, container, footer, footerItem, contents, addButtonCheckbox, 
-        notification, intro, introLogoSpan }
+        notification, intro, introLogoSpan, welcomeSpan }
