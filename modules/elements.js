@@ -29,7 +29,11 @@ const intro = document.querySelector(".intro");
 const introLogoSpan = document.querySelectorAll(".introLogoSpan");
 const welcomeSpan = document.querySelectorAll(".welcomeSpan");
 
+const header = document.querySelector("header");
+const logo = document.querySelector(".logo");
+const welcomeElement = document.querySelector(".welcome");
+
 export { geolocationBtn, cityInputField, citySearchContainer, body, temperatureToggle, updateFrequency, cityMatchList,
         weatherContainer, currentList, currentCityAndCountry, dailyList, hourlyList, addToFavoritesBtn,  
         refreshManualyBtn, addHomeCityBtn, favorites, container, footer, footerItem, contents, addButtonCheckbox, 
-        notification, intro, introLogoSpan, welcomeSpan }
+        notification, intro, introLogoSpan, welcomeSpan, header, logo, welcomeElement }

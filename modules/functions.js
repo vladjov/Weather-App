@@ -25,4 +25,5 @@ export { renderFavoriteCities } from './functions/renderFavoriteCities.js';
 export { showNotification } from './functions/showNotification.js';
 export { displayIntro } from './functions/displayIntro.js';
 export { displayWelcome } from './functions/displayWelcome.js';
-
+export { showWelcomeScreen } from './functions/showWelcomeScreen.js';
+export { hideWelcomeScreen } from './functions/hideWelcomeScreen.js';

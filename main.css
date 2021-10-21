@@ -1282,36 +1282,33 @@ footer .footerList .indicator {
     }
 }
 
-
-
-
-.showWellcomeScreenLogo {
+.showWelcomeScreenLogo {
     background: var(--background-light);
     height: 65px;
 }
-.showWellcomeScreenLogo h3 {
+.showWelcomeScreenLogo h3 {
     display: none;
 }
 
-header.showWellcomeScreenHeader {
+header.showWelcomeScreenHeader {
     display: grid;
     height: 100%;
 }
-.showWellcomeScreenHeader nav{
+.showWelcomeScreenHeader nav{
     height: max-content;
     display: block;
     transform: translateY(-65px);
 }
-.showWellcomeScreenHeader nav .citySearchContainer {
+.showWelcomeScreenHeader nav .citySearchContainer {
     justify-content: center;
     opacity: 0;
     transition: all 1s ease-in-out;
 }
-.showWellcomeScreenHeader nav .citySearchContainer.welcomeActive {
+.showWelcomeScreenHeader nav .citySearchContainer.welcomeActive {
     opacity: 1;
 }
 
-.showWellcomeScreenHeader nav .citySearchContainer button{
+.showWelcomeScreenHeader nav .citySearchContainer button{
     margin: 0 1em;
     border: 1px solid transparent;
     box-shadow: 0 0.2em 0.7em rgba(163, 177, 198, 0.4),
@@ -1320,10 +1317,10 @@ header.showWellcomeScreenHeader {
     border-radius: 0.5em;
 }
 
-.showWellcomeScreenHeader nav .citySearchContainer button:hover {
+.showWelcomeScreenHeader nav .citySearchContainer button:hover {
     border: 1px solid var(--main-blue);
 }
-.showWellcomeScreenHeader nav .citySearchContainer button:active {
+.showWelcomeScreenHeader nav .citySearchContainer button:active {
     scale: 0.99;
 }
 

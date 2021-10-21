@@ -1,5 +1,6 @@
 # Weather-App
 
+## About
 This is a simple, Vanilla JavaScript, weather forecast application, which uses [OpenWeather](https://openweathermap.org/) API.
 
 User can use browser's geolocation or input form, with filterable list functionality, to get and display weather data, in light or dark theme dependant on the time of day.

@@ -1,6 +1,6 @@
 import { APIURLBASE, APIKEY, dateOptions, timeOptions, enterValidCityNameMsg, selectOnlyOneMsg, geolocationNotSuportedMsg, locatingMsg, noLocationMsg, refreshManuallyMsg,  minCaractersToSearch, milisecondsInHour, activeElementClass } from './modules/variables.js';
-import { geolocationBtn, cityInputField, addToFavoritesBtn, refreshManualyBtn, addHomeCityBtn, body, temperatureToggle, updateFrequency, cityMatchList, weatherContainer, currentList, dailyList, hourlyList, favorites, currentCityAndCountry, container, footerItem, contents }  from './modules/elements.js';
-import { checkUvi, floorValue, toggleDayOrNightMode, showDetails, resetInputAndCitiesMatched, resetLayout, renderWindDirection, getTime, addToLocalStorage, removeFromLocalStorage, renderMessage, getFavoritesFromStorage, getHomeCityFromStorage, showCurrentTemperatureAndIcon, clearFavoritesElement, renderHomeCityEmpty, uncheckAddButtonCheckbox, animateTab, findElementWithClass, renderFavoriteCities, renderHomeCity, showNotification, displayIntro, displayWelcome } from './modules/functions.js';
+import { geolocationBtn, cityInputField, addToFavoritesBtn, refreshManualyBtn, addHomeCityBtn, body, temperatureToggle, updateFrequency, cityMatchList, weatherContainer, currentList, dailyList, hourlyList, favorites, currentCityAndCountry, container, footerItem, contents, header, logo, welcomeElement }  from './modules/elements.js';
+import { checkUvi, floorValue, toggleDayOrNightMode, showDetails, resetInputAndCitiesMatched, resetLayout, renderWindDirection, getTime, addToLocalStorage, removeFromLocalStorage, renderMessage, getFavoritesFromStorage, getHomeCityFromStorage, showCurrentTemperatureAndIcon, clearFavoritesElement, renderHomeCityEmpty, uncheckAddButtonCheckbox, animateTab, findElementWithClass, renderFavoriteCities, renderHomeCity, showNotification, displayIntro, displayWelcome, showWelcomeScreen, hideWelcomeScreen } from './modules/functions.js';
 import { templateCurrent, templateDaily, templateHourly, templateMatchingCity, templateCurrentCityName, templateUpdateFrequency, templateTemperatureToggle } from './modules/templates.js';
 import { City } from '../modules/functions/createCity.js';
 import { alertSVG } from './modules/icons.js';
@@ -221,7 +221,7 @@ async function selectAndUpdateCityByEnter() {
     await extractAPIData(generateURLbyGeolocation(lat, lon));
     renderWeatherElements();
     resetInputAndCitiesMatched();
-    hideWellcomeScreen();
+    hideWelcomeScreen();
 };
 
 async function selectAndUpdateCityByClick(event) {
@@ -268,27 +268,15 @@ function geolocateMe() {
 };
 geolocationBtn.addEventListener("click", geolocateMe);
 
-let loadWeatherAndForecastFromLocalStorage = () => (localStorage.homeCity) ? (selectAndUpdateCityByLocalStorage(), hideWellcomeScreen()) : showWellcomeScreen();
+let loadWeatherAndForecastFromLocalStorage = () => (localStorage.homeCity) ? (selectAndUpdateCityByLocalStorage(), hideWelcomeScreen()) : showWelcomeScreen();
 
 async function selectAndUpdateCityByLocalStorage() {
     let homeCityLocalStorage = JSON.parse(localStorage.homeCity);
-
     await updateValues(extractAPIData(generateURLbyReverseGeocoding(homeCityLocalStorage.latitude, homeCityLocalStorage.longitude)));
     await extractAPIData(generateURLbyGeolocation(homeCityLocalStorage.latitude, homeCityLocalStorage.longitude));
     renderWeatherElements();
     resetInputAndCitiesMatched();
 };
-
-let showWellcomeScreen = () => {
-    document.querySelector("header").classList.add("showWellcomeScreenHeader");
-    document.querySelector(".logo").classList.add("showWellcomeScreenLogo");
-}
-
-let hideWellcomeScreen = () => {
-    document.querySelector("header").classList.remove("showWellcomeScreenHeader");
-    document.querySelector(".logo").classList.remove("showWellcomeScreenLogo");
-    document.querySelector(".welcome").style.display = "none";
-}
 
 window.onload = () => {
     displayIntro();
