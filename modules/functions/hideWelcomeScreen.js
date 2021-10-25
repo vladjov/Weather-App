@@ -1,4 +1,8 @@
-import { header, logo, welcomeElement } from '/modules/elements.js';
+import { 
+    header, 
+    logo, 
+    welcomeElement 
+} from '/modules/elements.js';
 
 let hideWelcomeScreen = () => {
     header.classList.remove("showWelcomeScreenHeader");

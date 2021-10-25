@@ -1,4 +1,7 @@
-import { intro, introLogoSpan} from '/modules/elements.js';
+import { 
+    intro, 
+    introLogoSpan
+} from '/modules/elements.js';
 
 let displayIntro = () => {
     setTimeout(() => {

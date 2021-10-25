@@ -1,4 +1,7 @@
-import { header, logo } from '/modules/elements.js';
+import { 
+    header, 
+    logo 
+} from '/modules/elements.js';
 
 let showWelcomeScreen = () => {
     header.classList.add("showWelcomeScreenHeader");

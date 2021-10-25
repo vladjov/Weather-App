@@ -1,4 +1,7 @@
-import { welcomeSpan, citySearchContainer } from '/modules/elements.js';
+import { 
+    welcomeSpan, 
+    citySearchContainer 
+} from '/modules/elements.js';
 
 let displayWelcome = () => {
     setTimeout(() => {
