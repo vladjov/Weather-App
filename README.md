@@ -6,6 +6,8 @@ This is a simple, Vanilla JavaScript, weather forecast application, which uses [
 User can use browser's geolocation or input form, with filterable list functionality, to get and display weather data, in light or dark theme dependant on the time of day.
 There is a possibility of saving home and favorite cities, as well as adjusting settings such as units and update frequency.
 
+To see the app in action go to ![Weather App - Walktrough video](https://github.com/vladjov/Weather-App/issues/2#issue-1038139549).
+
 
 ## Features
 - ES modules are used to split code into smaller files.
