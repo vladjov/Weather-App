@@ -3,12 +3,7 @@ import {
     APIKEY, 
     dateOptions, 
     timeOptions, 
-    enterValidCityNameMsg, 
-    selectOnlyOneMsg, 
-    geolocationNotSuportedMsg, 
-    locatingMsg, 
-    noLocationMsg, 
-    refreshManuallyMsg,  
+    messages,
     minCaractersToSearch, 
     milisecondsInHour, 
     activeElementClass 
@@ -46,36 +41,28 @@ import {
     getTime, 
     addToLocalStorage, 
     removeFromLocalStorage, 
-    renderMessage, 
     getFavoritesFromStorage, 
     getHomeCityFromStorage, 
     showCurrentTemperatureAndIcon, 
     clearFavoritesElement, 
     renderHomeCityEmpty, 
-    uncheckAddButtonCheckbox, 
     animateTab, 
     findElementWithClass, 
     renderFavoriteCities, 
     renderHomeCity, 
-    showNotification, 
     displayIntro, 
     displayWelcome, 
     showWelcomeScreen, 
-    hideWelcomeScreen 
+    hideWelcomeScreen,
+    notifyUser
 } from './modules/functions.js';
 
 import { 
-    templateCurrent, 
-    templateDaily, 
-    templateHourly, 
-    templateMatchingCity, 
-    templateCurrentCityName, 
-    templateUpdateFrequency, 
-    templateTemperatureToggle 
+    template,
 } from './modules/templates.js';
 
 import { City } from '../modules/functions/createCity.js';
-import { alertSVG } from './modules/icons.js';
+import { icons } from './modules/icons.js';
 
 let lat;
 let lon;
@@ -88,65 +75,47 @@ let favoritesList = [];
 let homeCity;
 let refreshFrequencyFromStorage;
 
-
 let addFavouriteToStorage = () => {
     if (!cityAndCountry) {
-        uncheckAddButtonCheckbox();
-        renderMessage(`${alertSVG} Can't add undefined!!!`);
-        showNotification();
-        
+        notifyUser(`${icons.alert} ${messages.undefinedAlert}`);
         return;
     };
 
     if (favoritesList.some(favorite => favorite.city === cityAndCountry)) {
-        uncheckAddButtonCheckbox();
-        renderMessage(`${cityAndCountry} is already in favorites.`);
-        showNotification();
-        
+        notifyUser(`${cityAndCountry} ${messages.alreadyAdded} to favorites.`);
         return;
     }
 
-    favoritesList.push(new City(cityAndCountry, lat, lon));
+    favoritesList = [...favoritesList, new City(cityAndCountry, lat, lon)]
     addToLocalStorage("favorites", JSON.stringify(favoritesList));
     
     clearFavoritesElement();
     renderFavoriteCities();
     renderHomeCity();
-    uncheckAddButtonCheckbox();
-    renderMessage(`${cityAndCountry} is added to favorites.`);
-    showNotification();
+    notifyUser(`${cityAndCountry} ${messages.isAdded} to favorites.`);
 };
 
 let addHomeCityToStorage = () => {
     if (!cityAndCountry) {
-        uncheckAddButtonCheckbox();
-        renderMessage(`${alertSVG} Can't add undefined!!!`);
-        showNotification();
-        
+        notifyUser(`${icons.alert} ${messages.undefinedAlert}`);
         return;
     };
 
     if (getHomeCityFromStorage() !== undefined && getHomeCityFromStorage().city === cityAndCountry) {
-        uncheckAddButtonCheckbox();
-        renderMessage(`${cityAndCountry} is already a home city.`);
-        showNotification();
-        
+        notifyUser(`${cityAndCountry} ${messages.alreadyAdded} as a home city.`);
         return;
     }
 
     homeCity = new City(cityAndCountry, lat, lon);
     addToLocalStorage("homeCity", JSON.stringify(homeCity));
     renderHomeCity();
-    uncheckAddButtonCheckbox();
-    renderMessage(`${cityAndCountry} is added as home city.`);
-    showNotification();
+    notifyUser(`${cityAndCountry} ${messages.isAdded} as home city.`);
 };
 
 let loadFavoritesFromLocalStorage = () => {
     if (getFavoritesFromStorage() === undefined) {
         renderFavoriteCities();
         renderHomeCity();
-        
         return;
     };
 
@@ -161,18 +130,16 @@ addToFavoritesBtn.addEventListener("click", addFavouriteToStorage);
 addHomeCityBtn.addEventListener("click", addHomeCityToStorage);
 
 let deleteHomeCity = () => {
-    renderMessage(`${JSON.parse(localStorage.homeCity).city} is no longer a home city.`);
     removeFromLocalStorage("homeCity");
     clearFavoritesElement();
     renderHomeCityEmpty();
     renderFavoriteCities();
-    showNotification();
+    notifyUser(`${JSON.parse(localStorage.homeCity).city} is no longer a home city.`);
 };
 
 let deleteSelectedFavorite = (selected) => {
     if (selected.parentNode.classList[0] === "homeCity") {
         deleteHomeCity();
-        
         return; 
     };
     
@@ -181,27 +148,32 @@ let deleteSelectedFavorite = (selected) => {
     clearFavoritesElement();
     renderFavoriteCities();
     renderHomeCity();
-    renderMessage(`${selected.parentNode.firstElementChild.innerHTML} is removed from favorites.`);
-    showNotification();
+    notifyUser(`${selected.parentNode.firstElementChild.innerHTML} is removed from favorites.`);
 };
 
 async function showSelectedFavorite(selected) {
     if (selected.classList[0] === "homeCity") {
         if (!localStorage.homeCity) return;
-        if (lat === JSON.parse(localStorage.homeCity).latitude && lon === JSON.parse(localStorage.homeCity).longitude) {
-            selectAndUpdateCityByEnter(); 
-            
-            return;
-        };
+        if (
+            lat === JSON.parse(localStorage.homeCity).latitude 
+            && lon === JSON.parse(localStorage.homeCity).longitude
+            ) {
+                selectAndUpdateCityByEnter();    
+                return;
+            };
 
         lat = JSON.parse(localStorage.homeCity).latitude;
         lon = JSON.parse(localStorage.homeCity).longitude;   
     } else {
-        if (!localStorage.favorites || JSON.parse(localStorage.favorites).length === 0) return;
-        if (parseFloat(lat).toFixed(2) === (parseFloat(JSON.parse(localStorage.favorites).filter(e => e.city === selected.innerText)[0].latitude)).toFixed(2) && parseFloat(lon).toFixed(2) === (parseFloat(JSON.parse(localStorage.favorites).filter(e => e.city === selected.innerText)[0].longitude)).toFixed(2)) {
+        if (
+            !localStorage.favorites 
+            || JSON.parse(localStorage.favorites).length === 0
+            ) return;
+        if (
+            parseFloat(lat).toFixed(2) === (parseFloat(JSON.parse(localStorage.favorites).filter(e => e.city === selected.innerText)[0].latitude)).toFixed(2) && parseFloat(lon).toFixed(2) === (parseFloat(JSON.parse(localStorage.favorites).filter(e => e.city === selected.innerText)[0].longitude)).toFixed(2)) {
             selectAndUpdateCityByEnter(); 
-            
             return;
+            // refactor !!!! UNREADABLE
         };
 
         lat = JSON.parse(localStorage.favorites).filter(e => e.city === selected.innerText)[0].latitude;
@@ -224,8 +196,7 @@ let uppercaseFirstLetter = (string) => {
 async function unitToggle(unit) {
     if (unit === defaultUnit) return;
     defaultUnit = unit;
-    renderMessage(`${uppercaseFirstLetter(`${defaultUnit}`)} units selected.`);
-    showNotification();
+    notifyUser(`${uppercaseFirstLetter(`${defaultUnit}`)} units selected.`);
     await extractAPIData(generateURLbyGeolocation(lat, lon));
     renderWeatherElements();
 };
@@ -244,7 +215,6 @@ const searchCities = async searchCitiesInput => {
 
     matches = citiesArray.filter( city => {
         const regex = new RegExp(`^${searchCitiesInput}`, "gi");
-        
         return city.name.match(regex);
     });
 
@@ -253,13 +223,12 @@ const searchCities = async searchCitiesInput => {
         cityMatchList.innerHTML = "";
     };
     renderCitiesMatched(matches);
-    
     return matches;
 };
 
 let renderCitiesMatched = matches => {
     if (matches.length === 0) return;
-    const cityMatchedHtml = matches.map(match => templateMatchingCity(match)).join("");
+    const cityMatchedHtml = matches.map(match => template.matchingCity(match)).join("");
     cityMatchList.innerHTML = cityMatchedHtml;
 };
 
@@ -268,21 +237,15 @@ cityInputField.addEventListener("input", () => searchCities(cityInputField.value
 cityInputField.addEventListener("keyup", (e) => {
 	if (e.key === "Enter") {
         if (!cityInputField.value || cityInputField.value[0] === " ") {
-            renderMessage(`${alertSVG} ${enterValidCityNameMsg}`);
-            showNotification();
-            
+            notifyUser(`${icons.alert} ${messages.validCityName}`);
             return;
         };
         if (!matches || matches.length === 0){
-            renderMessage(`${alertSVG} ${enterValidCityNameMsg}`);
-            showNotification();
-            
+            notifyUser(`${icons.alert} ${messages.validCityName}`);
             return;
         };
         if (matches.length !== 1) {
-            renderMessage(`${alertSVG} ${selectOnlyOneMsg}`);
-            showNotification();
-            
+            notifyUser(`${icons.alert} ${messages.selectOnlyOne}`);
             return;
         };
         e.preventDefault();
@@ -322,13 +285,12 @@ cityMatchList.addEventListener("click", selectAndUpdateCityByClick);
 
 async function extractAPIData(url) {
     let response = await fetch(url);
-    apiData = await response.json();
-    
+    apiData = await response.json(); 
     return apiData;
 };
 
-async function updateValues(extractFrom) {
-    let response = await extractFrom;
+async function updateValues(extractedFrom) {
+    let response = await extractedFrom;
     lat = response[0].lat;
     lon = response[0].lon;
     cityAndCountry = response[0].name + ", " + response[0].country;
@@ -343,36 +305,51 @@ function geolocateMe() {
     };
     
     let error = () => {
-        renderMessage(noLocationMsg);
-        showNotification();
+        notifyUser(messages.noLocation);
     };
   
     if (!navigator.geolocation) {
-        renderMessage(geolocationNotSuportedMsg);
-        showNotification();
-        
+        notifyUser(messages.geolocationNotSuported);
         return;
     };
-    renderMessage(locatingMsg);
-    showNotification();
+    notifyUser(messages.locating);
     navigator.geolocation.getCurrentPosition(success, error);
 };
 geolocationBtn.addEventListener("click", geolocateMe);
 
-let loadWeatherAndForecastFromLocalStorage = () => (localStorage.homeCity) ? (selectAndUpdateCityByLocalStorage(), hideWelcomeScreen()) : showWelcomeScreen();
+let loadWeatherAndForecastFromLocalStorage = () => {
+    (localStorage.homeCity) 
+        ? (
+            selectAndUpdateCityByLocalStorage(), 
+            hideWelcomeScreen()
+        ) 
+        : showWelcomeScreen()
+};
 
 async function selectAndUpdateCityByLocalStorage() {
     let homeCityLocalStorage = JSON.parse(localStorage.homeCity);
-    await updateValues(extractAPIData(generateURLbyReverseGeocoding(homeCityLocalStorage.latitude, homeCityLocalStorage.longitude)));
-    await extractAPIData(generateURLbyGeolocation(homeCityLocalStorage.latitude, homeCityLocalStorage.longitude));
+    await updateValues(
+        extractAPIData(
+            generateURLbyReverseGeocoding(
+                homeCityLocalStorage.latitude, 
+                homeCityLocalStorage.longitude
+            )
+        )
+    );
+    await extractAPIData(
+        generateURLbyGeolocation(
+            homeCityLocalStorage.latitude, 
+            homeCityLocalStorage.longitude
+        )
+    );
     renderWeatherElements();
     resetInputAndCitiesMatched();
 };
 
 window.onload = () => {
     displayIntro();
-    templateTemperatureToggle(temperatureToggle);
-    templateUpdateFrequency(updateFrequency);
+    template.unitToggle(temperatureToggle);
+    template.updateFrequency(updateFrequency);
 	loadWeatherAndForecastFromLocalStorage();
     displayWelcome();
     loadFavoritesFromLocalStorage();
@@ -431,60 +408,43 @@ let resetAllLayouts = () => {
     resetLayout(hourlyList);
 };
 
-let renderCurrentElement = (object) => { 
-    templateCurrent(object, currentList);
-};
-
-let renderCurrentCityName = (object) => {
-    templateCurrentCityName(object, currentCityAndCountry);
-};
-
-let renderDailyElement = (object) => {
-    let dailyLi = document.createElement("li");
-    templateDaily(object, dailyLi);
-    dailyList.appendChild(dailyLi);
-};
-
-let renderHourlyElement = (object) => {
-    let hourlyLi = document.createElement("li");
-    templateHourly(object, hourlyLi);
-    hourlyList.appendChild(hourlyLi);
+let renderElements = (array, createTemplateFunc, target) => {
+    array.map((object) => {
+        let li = document.createElement("li");
+        createTemplateFunc(object, li);
+        target.appendChild(li);
+    });
 };
 
 let renderWeatherElements = () => {
     resetAllLayouts();
     formatAPIData();
     weatherContainer.style.display = "flex"; 
-    renderCurrentElement(apiData.current);
-    renderCurrentCityName(apiData.current);
-    (apiData.daily).forEach((object) => renderDailyElement(object));
-    (apiData.hourly).forEach((object) => renderHourlyElement(object));
+    template.current(apiData.current, currentList);
+    template.currentCityName(apiData.current, currentCityAndCountry);
+    renderElements(apiData.hourly, template.hourly, hourlyList);
+    renderElements(apiData.daily, template.daily, dailyList);
     toggleDayOrNightMode(apiData.current, body);
 };
 
 dailyList.addEventListener("click", showDetails);
 hourlyList.addEventListener("click", showDetails);
 
-let showElementAsChecked = (element) => {
-    document.getElementById(element).checked = "checked";
-};
+let elementChecked = (el) => document.getElementById(el).checked = "checked";
 
 let loadRefreshFrequencyFromStorage = () => {
     if (!localStorage.frequency) return;
 
     clearInterval(refreshFrequencyFromStorage);
-    showElementAsChecked(localStorage.frequency);
+    elementChecked(localStorage.frequency);
 
     if (localStorage.frequency === "manually") {
-        renderMessage(refreshManuallyMsg);
-        showNotification();
-        
+        notifyUser(messages.refreshManually);
         return;
     };
     
     refreshFrequencyFromStorage = setInterval((() => selectAndUpdateCityByEnter()), localStorage.frequency * milisecondsInHour);
-    renderMessage(`Refresh every ${localStorage.frequency == 1 ? (`hour.`) : (`${localStorage.frequency} hours.`)}`);
-    showNotification();
+    notifyUser(`Refresh every ${localStorage.frequency == 1 ? (`hour.`) : (`${localStorage.frequency} hours.`)}`);
 };
 
 updateFrequency.addEventListener("click", function(event) {
@@ -511,12 +471,15 @@ container.onclick = clickedElement => {
 
         if (clickedElement.target.classList.contains("footerItem4")) {
             addActiveElementClassAndAnimateElement("footerItem1");
-            
             return;
         };
         
-        (datasetId === "favoritesElement") ? addActiveElementClassAndAnimateElement("footerItem3") : "";
-        (datasetId === "currentWeatherElement") ? addActiveElementClassAndAnimateElement("footerItem1") : "";
+        (datasetId === "favoritesElement") 
+            ? addActiveElementClassAndAnimateElement("footerItem3") 
+            : "";
+        (datasetId === "currentWeatherElement") 
+            ? addActiveElementClassAndAnimateElement("footerItem1") 
+            : "";
 
         clickedElement.target.classList.add(activeElementClass);
         element.classList.add(activeElementClass);

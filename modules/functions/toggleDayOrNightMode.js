@@ -1,9 +1,7 @@
-let toggleDayOrNightMode = (data, elementToChange) => {
-    if((data.timeOfDay) && (data.timeOfDay === "night")) {
-        elementToChange.classList.add("nightMode");
-    } else {
-        elementToChange.classList.remove("nightMode");
-    };
-};
+let toggleDayOrNightMode = (data, elementToChange) => 
+    (data.timeOfDay) && (data.timeOfDay === "night") 
+        ? elementToChange.classList.add("nightMode") 
+        : elementToChange.classList.remove("nightMode");   
+;
 
 export { toggleDayOrNightMode };
